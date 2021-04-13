@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="spacing_small" type="dimen">4dp</item>
+    <item name="spacing_medium" type="dimen">8dp</item>
+    <item name="spacing_large" type="dimen">16dp</item>
+</resources>

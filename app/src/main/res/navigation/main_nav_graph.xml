@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/records_fragment">
+
+    <fragment
+        android:id="@+id/records_fragment"
+        android:name="me.fitbod.repetition.views.RecordsFragment"
+        android:label="RecordsFragment"
+        tools:layout="@layout/fragment_records">
+        <action
+            android:id="@+id/action_workout_chart_fragment"
+            app:destination="@id/workout_chart_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/workout_chart_fragment"
+        android:name="me.fitbod.repetition.views.WorkoutChartFragment"
+        android:label="WorkoutChartFragment"
+        tools:layout="@layout/fragment_workout_chart">
+        <argument
+            android:name="exercise_name"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
+            android:name="one_rm_record"
+            app:argType="integer"
+            app:nullable="false" />
+    </fragment>
+</navigation>
