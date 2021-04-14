@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 import me.fitbod.repetition.data.WorkoutHistoryDao
 import javax.inject.Provider
 
+private const val WORKOUT_DATA_FILE_NAME = "workout-data.txt"
+
 class WorkoutHistoryCallback constructor(
     @ApplicationContext private val context: Context,
     private val prepopulateWorkoutHistory: PrepopulateWorkoutHistory,
@@ -21,7 +23,7 @@ class WorkoutHistoryCallback constructor(
 ) : RoomDatabase.Callback() {
     override fun onCreate(db: SupportSQLiteDatabase) {
         super.onCreate(db)
-        val inputStream = context.resources.assets.open("workout-data.txt")
+        val inputStream = context.resources.assets.open(WORKOUT_DATA_FILE_NAME)
         externalScope.launch(dispatcher) {
             val workoutEntities = prepopulateWorkoutHistory.createFromStream(inputStream)
             workoutHistoryDao.get().insert(workoutEntities)

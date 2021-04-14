@@ -8,12 +8,11 @@ import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
-import me.fitbod.repetition.CoroutineTestRule
 import me.fitbod.repetition.db.OneRmDatabase
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.LocalDate
@@ -24,16 +23,15 @@ class WorkoutHistoryDaoTest {
     lateinit var db: OneRmDatabase
     lateinit var workoutHistoryDao: WorkoutHistoryDao
 
-    @get:Rule
-    var coroutineTestRule = CoroutineTestRule()
+    private val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 
     @Before
     fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room
             .inMemoryDatabaseBuilder(context, OneRmDatabase::class.java)
-            .setTransactionExecutor(coroutineTestRule.testDispatcher.asExecutor())
-            .setQueryExecutor(coroutineTestRule.testDispatcher.asExecutor())
+            .setTransactionExecutor(testDispatcher.asExecutor())
+            .setQueryExecutor(testDispatcher.asExecutor())
             .build()
         workoutHistoryDao = db.workoutHistoryDao()
     }
@@ -47,7 +45,7 @@ class WorkoutHistoryDaoTest {
      * Ref: https://developer.android.com/kotlin/flow/test
      */
     @Test
-    fun insertWorkoutHistoryEntities() = coroutineTestRule.testDispatcher.runBlockingTest {
+    fun insertWorkoutHistoryEntities() = testDispatcher.runBlockingTest {
         // given
         val entity1 = WorkoutHistoryEntity(LocalDate.of(2020, 10, 11), "exercise1", 1, 10, 45)
         val entity2 = WorkoutHistoryEntity(LocalDate.of(2020, 10, 12), "exercise2", 1, 10, 135)
@@ -64,7 +62,7 @@ class WorkoutHistoryDaoTest {
     }
 
     @Test
-    fun selectWorkoutHistoryEntities() = coroutineTestRule.testDispatcher.runBlockingTest {
+    fun getWorkoutHistoryEntities() = testDispatcher.runBlockingTest {
         // given
         val entity1 = WorkoutHistoryEntity(LocalDate.of(2020, 10, 11), "exercise1", 1, 10, 45)
         val entity2 = WorkoutHistoryEntity(LocalDate.of(2020, 10, 12), "exercise2", 1, 10, 135)
@@ -92,5 +90,22 @@ class WorkoutHistoryDaoTest {
             reps.shouldBe(entity2.reps)
             weight.shouldBe(entity2.weight)
         }
+    }
+
+    @Test
+    fun getWorkoutHistoryByExerciseNameEntities() = testDispatcher.runBlockingTest {
+        // given
+        val entity1 = WorkoutHistoryEntity(LocalDate.of(2020, 10, 11), "exercise1", 1, 10, 45)
+        val entity2 = WorkoutHistoryEntity(LocalDate.of(2020, 10, 12), "exercise2", 1, 10, 135)
+        val entity3 = WorkoutHistoryEntity(LocalDate.of(2020, 10, 13), "exercise1", 1, 15, 100)
+        val items = listOf(entity1, entity2, entity3)
+        workoutHistoryDao.insert(items)
+
+        // when
+        val data = workoutHistoryDao.getWorkoutHistory("exercise1").first()
+
+        // then
+        data.size.shouldBe(2)
+        data.forEach { it.exerciseName.shouldBe("exercise1") }
     }
 }

@@ -33,7 +33,6 @@ abstract class OneRmModule {
             callback: Provider<WorkoutHistoryCallback>
         ): OneRmDatabase {
             return Room.databaseBuilder(context, OneRmDatabase::class.java, "one-rm")
-                .fallbackToDestructiveMigration()
                 .addCallback(callback.get())
                 .build()
         }

@@ -10,7 +10,7 @@ class LineToWorkoutHistoryEntityMapperTest {
     private val mapper = LineToWorkoutHistoryEntityMapper()
 
     @Test
-    fun `line map`() {
+    fun `when valid line string, then return entity instance`() {
         // given
         val line = "Oct 11 2020,Back Squat,1,10,45"
 
@@ -29,7 +29,7 @@ class LineToWorkoutHistoryEntityMapperTest {
     }
 
     @Test
-    fun `entity should be null`() {
+    fun `when no reps, then return null entity`() {
         // given
         val line = "Oct 11 2020,Back Squat,1,45"
 
@@ -41,9 +41,21 @@ class LineToWorkoutHistoryEntityMapperTest {
     }
 
     @Test
-    fun `entity should be null 2`() {
+    fun `when invalid exercise date, then return null entity`() {
         // given
         val line = "Oct 34 2020,Back Squat,1,10,45"
+
+        // when
+        val entity = mapper.map(line)
+
+        // then
+        entity.shouldBeNull()
+    }
+
+    @Test
+    fun `when sets 0, then return null entity`() {
+        // given
+        val line = "Oct 11 2020,Back Squat,0,10,45"
 
         // when
         val entity = mapper.map(line)

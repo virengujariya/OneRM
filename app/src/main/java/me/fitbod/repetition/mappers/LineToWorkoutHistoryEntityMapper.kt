@@ -4,18 +4,18 @@ import me.fitbod.repetition.data.WorkoutHistoryEntity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.util.Locale
 import javax.inject.Inject
 
 class LineToWorkoutHistoryEntityMapper @Inject constructor() : Mapper<String, WorkoutHistoryEntity?> {
-    private val formatter = DateTimeFormatter.ofPattern("MMM dd yyyy")
-
+    private val formatter = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH)
     override fun map(input: String): WorkoutHistoryEntity? {
         val split = input.split(",".toRegex())
         if (split.size == 5) {
             val date = try {
                 LocalDate.parse(split[0], formatter)
             } catch (e: DateTimeParseException) {
-                null
+                return null
             }
             val exercise = split[1]
             val sets = split[2].toInt()

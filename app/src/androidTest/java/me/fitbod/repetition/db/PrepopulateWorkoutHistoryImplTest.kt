@@ -15,8 +15,8 @@ class PrepopulateWorkoutHistoryImplTest {
     @Before
     fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        prepopulateWorkoutHistory =
-            PrepopulateWorkoutHistoryImpl(InstrumentationRegistry.getInstrumentation().targetContext)
+        // prepopulateWorkoutHistory =
+        //     PrepopulateWorkoutHistoryImpl(InstrumentationRegistry.getInstrumentation().targetContext)
     }
 
     @Test

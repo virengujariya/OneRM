@@ -12,12 +12,12 @@ interface WorkoutHistoryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(entities: List<WorkoutHistoryEntity>): List<Long>
 
-    @Query("SELECT id, exercise_date, exercise_name, sets, reps, weight FROM workout_history")
+    @Query("SELECT id, exercise_date, exercise_name, sets, reps, weight FROM workout_history ORDER BY exercise_name")
     fun getWorkoutHistory(): Flow<List<WorkoutHistoryEntity>>
 
     fun getWorkoutHistoryDistinctUntilChanged() = getWorkoutHistory().distinctUntilChanged()
 
-    @Query("SELECT id, exercise_date, exercise_name, sets, reps, weight FROM workout_history WHERE exercise_name=:exerciseName")
+    @Query("SELECT id, exercise_date, exercise_name, sets, reps, weight FROM workout_history WHERE exercise_name=:exerciseName ORDER BY exercise_date")
     fun getWorkoutHistory(exerciseName: String): Flow<List<WorkoutHistoryEntity>>
 
     fun getWorkoutHistoryDistinctUntilChanged(exerciseName: String) =

@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import me.fitbod.repetition.DispatcherProvider
 import me.fitbod.repetition.OneRmCalculator
 import me.fitbod.repetition.domain.WorkoutHistoryUseCase
 import me.fitbod.repetition.repos.WorkoutHistoryRepo
@@ -16,8 +17,13 @@ abstract class WorkoutsModule {
         @Provides
         @ViewModelScoped
         fun provideWorkoutUseCase(
+            dispatcherProvider: DispatcherProvider,
             workoutHistoryRepo: WorkoutHistoryRepo,
             oneRmCalculator: OneRmCalculator
-        ) = WorkoutHistoryUseCase(workoutHistoryRepo = workoutHistoryRepo, oneRmCalculator = oneRmCalculator)
+        ) = WorkoutHistoryUseCase(
+            workoutHistoryRepo = workoutHistoryRepo,
+            dispatcherProvider = dispatcherProvider,
+            oneRmCalculator = oneRmCalculator
+        )
     }
 }

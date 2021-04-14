@@ -40,6 +40,7 @@ class RecordsFragment : Fragment() {
         initRecyclerView()
         setRecyclerViewAdapter()
         registerObservers()
+        viewModel.loadWorkouts()
     }
 
     private fun initRecyclerView() {
