@@ -23,10 +23,9 @@ class RecordsFragment : Fragment() {
 
     private val viewModel by viewModels<RecordsViewModel>()
 
-    private val itemClickListener = { exerciseName: String, oneRm: Int ->
+    private val adapter = RecordsAdapter { exerciseName: String, oneRm: Int ->
         viewModel.onItemClicked(exerciseName, oneRm)
     }
-    private val adapter = RecordsAdapter(itemClickListener)
 
     private var job: Job? = null
 
@@ -87,6 +86,8 @@ class RecordsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        job = null
+        binding.recyclerViewWorkouts.adapter = null
         _binding = null
     }
 }

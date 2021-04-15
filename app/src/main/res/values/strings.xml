@@ -3,4 +3,5 @@
     <string name="one_rm_record_label">1 RM Record</string>
     <string name="weight_unit_lbs_text">lbs</string>
     <string name="x_axis_weight_label">%d lbs</string>
+    <string name="chart_loading_text">Loading chart</string>
 </resources>

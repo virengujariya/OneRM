@@ -60,19 +60,21 @@ class WorkoutChartFragment : Fragment() {
                 setChartData(entries)
             }
         }
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.exerciseName().collect { name ->
                 binding.toolbar.title = name
                 binding.item.textViewExercise.text = name
             }
         }
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.oneRm().collect { oneRm -> binding.item.textViewWeight.text = oneRm }
         }
     }
 
     private fun configureChart() {
         chart.apply {
+            setNoDataText(getString(R.string.chart_loading_text))
+            setNoDataTextColor(requireContext().getColorFromAttr(R.attr.colorOnPrimary))
             setBackgroundColor(Color.TRANSPARENT)
             setDrawGridBackground(false)
             setTouchEnabled(false)
@@ -127,6 +129,11 @@ class WorkoutChartFragment : Fragment() {
             chart.notifyDataSetChanged()
             chart.invalidate()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

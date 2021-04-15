@@ -8,13 +8,14 @@ Project utilizes Android Architecture Components and other libraries including:
 1. Hilt + Dagger - Dependency injection
 2. Room - Local database storage
 3. Coroutines & flow - Concurrency design pattern
-4. Flow - Responsive design pattern
+4. Flow - Responsive data flow
 5. Jetpack Navigation - Navigation between screens
-4. Androidx RecyclerView + ListAdapter + DiffUtil - Create dynamic list, present list data in RecyclerView, computing diffs between Lists on a background thread
-5. MPAndroidChart - Charting library for plotting points in chart view
-5. Kotest Assertion - Test framework for kotlin
-6. MocK - Mocking library for Kotlin
-7. Androidx packages/dependencies
+6. View Bindings
+7. Androidx RecyclerView + ListAdapter + DiffUtil - Create dynamic list, present list data in RecyclerView, computing diffs between Lists on a background thread
+8. MPAndroidChart - Charting library for plotting points in chart view
+9. Kotest Assertion - Test framework for kotlin
+10. MocK - Mocking library for Kotlin
+11. Androidx packages/dependencies
 
 ## Build app
 Run `./gradlew clean assembleDebug` command from Android Studio's Terminal window.
@@ -33,12 +34,15 @@ Note- If you want to test app with different set of data, follow below steps
 ![screenshot-2](screenshots/2.png)
 
 ## Assumptions
+- Maximum of OneRMs is used when displaying values on screen
 - Workout history data file is always in English.
 - exercise name is a unique string.
 - `sets` value is always 1.
 - `reps` and `weight` is always greater than 0 and `weight`'s default unit is lbs.
+- Code is self explanatory and doesn't include comments in code.
 
 ## What's not included? (Future improvements)
 - Project doesn't support configuration for weight unit (kg, lbs etc)
 - Local database doesn't support choice of languages (default is English)
-- Minimal support for theme (light/dark)
+- Includes minimal support for theme, fonts and colors (light/dark)
+- Project is monolithic (separated by packages) and allows easy migration to multi-module setup
