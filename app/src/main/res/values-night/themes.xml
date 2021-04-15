@@ -1,0 +1,10 @@
+<resources>
+
+    <style name="Theme.OneRM" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/red_400</item>
+        <item name="colorPrimaryDark">@color/red_700</item>
+        <item name="colorPrimaryVariant">@color/red_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="chartAxisTextColor">@color/white</item>
+    </style>
+</resources>
