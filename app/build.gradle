@@ -44,13 +44,6 @@ android {
         unitTests.includeAndroidResources = true
     }
 
-    sourceSets {
-        androidTest {
-            assets.srcDirs += ["src/androidTest/assets"]
-            resources.srcDirs += ["src/androidTest/resources"]
-        }
-    }
-
     packagingOptions {
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LGPL2.1'
