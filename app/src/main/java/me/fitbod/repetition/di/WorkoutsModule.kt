@@ -21,8 +21,8 @@ abstract class WorkoutsModule {
             workoutHistoryRepo: WorkoutHistoryRepo,
             oneRmCalculator: OneRmCalculator
         ) = WorkoutHistoryUseCase(
-            workoutHistoryRepo = workoutHistoryRepo,
             dispatcherProvider = dispatcherProvider,
+            workoutHistoryRepo = workoutHistoryRepo,
             oneRmCalculator = oneRmCalculator
         )
     }

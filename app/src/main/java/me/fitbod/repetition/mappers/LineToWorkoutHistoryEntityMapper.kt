@@ -7,6 +7,9 @@ import java.time.format.DateTimeParseException
 import java.util.Locale
 import javax.inject.Inject
 
+/**
+ * Provides an instance of [WorkoutHistoryEntity] if all data in line string is valid otherwise null
+ */
 class LineToWorkoutHistoryEntityMapper @Inject constructor() : Mapper<String, WorkoutHistoryEntity?> {
     private val formatter = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH)
     override fun map(input: String): WorkoutHistoryEntity? {

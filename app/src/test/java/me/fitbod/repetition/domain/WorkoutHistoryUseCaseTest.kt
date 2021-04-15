@@ -35,7 +35,7 @@ class WorkoutHistoryUseCaseTest {
     private val calculator = BrzyckiOneRmCalculator()
     private val repo = WorkoutHistoryRepoImpl(dao)
 
-    private val useCase = WorkoutHistoryUseCase(repo, dispatcherProvider, calculator)
+    private val useCase = WorkoutHistoryUseCase(dispatcherProvider, repo, calculator)
 
     @Test
     fun `when no entities, then records size should be 0`() = dispatcherRule.testDispatcher.runBlockingTest {

@@ -44,8 +44,8 @@ class RecordsViewModelTest {
     private val repo = WorkoutHistoryRepoImpl(dao)
     private val calculator = BrzyckiOneRmCalculator()
     private val useCase = WorkoutHistoryUseCase(
-        workoutHistoryRepo = repo,
         dispatcherProvider = dispatcherProvider,
+        workoutHistoryRepo = repo,
         oneRmCalculator = calculator
     )
 

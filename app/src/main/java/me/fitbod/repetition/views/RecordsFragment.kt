@@ -64,7 +64,6 @@ class RecordsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        // Ref: https://proandroiddev.com/android-singleliveevent-redux-with-kotlin-flow-b755c70bb055
         job = viewModel.command().onEach { command ->
             when (command) {
                 is RecordsViewModel.Command.NavToWorkoutDetails -> navigateToWorkoutDetails(

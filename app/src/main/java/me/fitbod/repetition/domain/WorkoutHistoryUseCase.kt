@@ -9,8 +9,8 @@ import me.fitbod.repetition.repos.WorkoutHistoryRepo
 import kotlin.math.roundToInt
 
 class WorkoutHistoryUseCase(
-    private val workoutHistoryRepo: WorkoutHistoryRepo,
     private val dispatcherProvider: DispatcherProvider,
+    private val workoutHistoryRepo: WorkoutHistoryRepo,
     private val oneRmCalculator: OneRmCalculator
 ) {
     suspend fun getWorkoutOneRmRecords(): Flow<List<WorkoutRecord>> = withContext(dispatcherProvider.io()) {
@@ -19,7 +19,7 @@ class WorkoutHistoryUseCase(
                 .mapValues { entry ->
                     entry.value.map { workout ->
                         oneRmCalculator.calculate(workout.reps, workout.weight)
-                    }.maxOrNull()?.roundToInt() ?: 0
+                    }.maxOrNull()?.roundToInt() ?: 0 // Max oneRM value among list items
                 }.map { entry ->
                     WorkoutRecord(exerciseName = entry.key, maxOneRm = entry.value)
                 }
@@ -33,7 +33,7 @@ class WorkoutHistoryUseCase(
                     .mapValues { entry ->
                         entry.value.map { entity ->
                             oneRmCalculator.calculate(entity.reps, entity.weight)
-                        }.maxOrNull()?.roundToInt() ?: 0
+                        }.maxOrNull()?.roundToInt() ?: 0 // Max oneRM value among list items
                     }.map { entry ->
                         ExerciseHistory(exerciseDate = entry.key, oneRm = entry.value)
                     }.sortedBy { it.exerciseDate }

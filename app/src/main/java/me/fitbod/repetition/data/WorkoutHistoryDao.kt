@@ -15,11 +15,13 @@ interface WorkoutHistoryDao {
     @Query("SELECT id, exercise_date, exercise_name, sets, reps, weight FROM workout_history ORDER BY exercise_name")
     fun getWorkoutHistory(): Flow<List<WorkoutHistoryEntity>>
 
+    // // filters emissions and only reacts to distinct objects
     fun getWorkoutHistoryDistinctUntilChanged() = getWorkoutHistory().distinctUntilChanged()
 
     @Query("SELECT id, exercise_date, exercise_name, sets, reps, weight FROM workout_history WHERE exercise_name=:exerciseName ORDER BY exercise_date")
     fun getWorkoutHistory(exerciseName: String): Flow<List<WorkoutHistoryEntity>>
 
+    // filters emissions and only reacts to distinct objects
     fun getWorkoutHistoryDistinctUntilChanged(exerciseName: String) =
         getWorkoutHistory(exerciseName).distinctUntilChanged()
 }

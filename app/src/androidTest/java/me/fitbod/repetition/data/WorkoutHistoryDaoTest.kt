@@ -41,9 +41,6 @@ class WorkoutHistoryDaoTest {
         db.close()
     }
 
-    /**
-     * Ref: https://developer.android.com/kotlin/flow/test
-     */
     @Test
     fun insertWorkoutHistoryEntities() = testDispatcher.runBlockingTest {
         // given

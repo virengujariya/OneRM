@@ -14,6 +14,8 @@ class RecordsAdapter(private val itemClickListener: (exerciseName: String, oneRm
         setHasStableIds(true)
     }
 
+    override fun getItemId(position: Int): Long = getItem(position).exerciseName.hashCode().toLong()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         val binding = ItemRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemHolder(binding)
