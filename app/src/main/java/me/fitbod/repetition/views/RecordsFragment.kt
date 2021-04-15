@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -26,6 +27,8 @@ class RecordsFragment : Fragment() {
         viewModel.onItemClicked(exerciseName, oneRm)
     }
     private val adapter = RecordsAdapter(itemClickListener)
+
+    private var job: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,17 +57,28 @@ class RecordsFragment : Fragment() {
     }
 
     private fun registerObservers() {
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.workouts().collect { items -> adapter.submitList(items) }
         }
-        viewModel.command().onEach { command ->
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Ref: https://proandroiddev.com/android-singleliveevent-redux-with-kotlin-flow-b755c70bb055
+        job = viewModel.command().onEach { command ->
             when (command) {
                 is RecordsViewModel.Command.NavToWorkoutDetails -> navigateToWorkoutDetails(
                     command.exerciseName,
                     command.oneRm
                 )
+
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        job?.cancel()
     }
 
     private fun navigateToWorkoutDetails(exerciseName: String, oneRm: Int) {

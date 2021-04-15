@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import me.fitbod.repetition.R
 import me.fitbod.repetition.databinding.FragmentWorkoutChartBinding
 import me.fitbod.repetition.getColorFromAttr
@@ -39,19 +39,36 @@ class WorkoutChartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setToolBarNavigation()
         configureChart()
         configureAxis()
+        registerObservers()
+        viewModel.loadWorkoutDetails()
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
+    private fun setToolBarNavigation() {
+        binding.toolbar.navigationIcon?.setTint(requireContext().getColorFromAttr(R.attr.colorOnPrimary))
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun registerObservers() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.entries().collect { entries ->
                 if (entries.isEmpty()) return@collect
                 setChartData(entries)
             }
-            viewModel.exerciseName().collect { name -> binding.item.textViewExercise.text = name }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.exerciseName().collect { name ->
+                binding.toolbar.title = name
+                binding.item.textViewExercise.text = name
+            }
+        }
+        lifecycleScope.launchWhenStarted {
             viewModel.oneRm().collect { oneRm -> binding.item.textViewWeight.text = oneRm }
         }
-
-        viewModel.loadWorkoutDetails()
     }
 
     private fun configureChart() {
